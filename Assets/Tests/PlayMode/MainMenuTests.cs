@@ -41,6 +41,20 @@ namespace ProjetoFinal.Tests
             CollectionAssert.IsSubsetOf(new[] { "menu.play", "menu.settings", "menu.market", "menu.quit" }, keys);
         }
 
+        [UnityTest]
+        public IEnumerator Menu_PlaysThemeMusic_AndAnimatesTitle()
+        {
+            yield return null;
+            var music = Object.FindAnyObjectByType<ProjetoFinal.Audio.MusicPlayer>();
+            Assert.IsNotNull(music);
+            Assert.AreEqual("MenuTheme", music.Current.name);
+
+            var title = Object.FindObjectsByType<LocalizedText>().Single(t => t.Key == "game.title");
+            var animator = title.GetComponent<Animator>();
+            Assert.IsNotNull(animator);
+            Assert.IsTrue(animator.isActiveAndEnabled);
+        }
+
         [Test]
         public void Menu_HasExactlyOneLanguageButton()
         {
