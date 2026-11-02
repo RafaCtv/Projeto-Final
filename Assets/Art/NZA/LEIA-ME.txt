@@ -1,0 +1,41 @@
+NO ZOMBIES ALLOWED - assets extraidos
+=====================================
+Jogo original: No Zombies Allowed (Booyah Inc., 2012-2013, descontinuado).
+Engine original: cocos2d-iphone. Extraido de um APK publico.
+
+CONTEUDO
+  sprites/   2835 pecas de personagem/objeto, por atlas de origem
+  cenario/   64 decoracoes (arvore, bunker, caixao, boneco de neve...)
+  ui/        814 PNGs de interface (botoes, icones, emotes)
+  audio/     66 efeitos sonoros em Ogg Vorbis
+  dados/     paletas de cor, anchors/tamanhos e nomes das pecas
+
+USO NO UNITY
+  Todos os PNGs sao RGBA8888 padrao - importam direto.
+  Alpha premultiplicado ja foi revertido; nao precisa de shader especial.
+  Import: Alpha Is Transparency ON, Generate Mip Maps OFF, filtro Bilinear.
+
+RESSALVAS IMPORTANTES
+  1) Muita peca de personagem esta em tons de cinza. Nao e defeito: o jogo
+     colorizava em runtime aplicando add/mul por canal (ver dados/palettes.json).
+  2) sprites/boss_pieces/ esta espelhado horizontalmente no arquivo original.
+     Use flipX ou espelhe os PNGs.
+  3) Os atlas eram RGBA4444 (4 bits por canal). A perda de qualidade ja estava
+     no build original e e irreversivel - espere banding em gradientes.
+     A pasta ui/ e a excecao: continua em 8 bits por canal.
+  4) Personagens sao bonecos articulados (~20 pecas cada), nao sprites inteiros.
+     As animacoes NAO estao incluidas - o formato de rig (.rigAnimSet) nao foi
+     decodificado. As pecas servem, mas a animacao tem que ser refeita.
+
+O QUE FOI DELIBERADAMENTE REMOVIDO
+  - Fontes CrashLandingBB e CreativeBlockBB: fontes comerciais da Blambot
+    (Nate Piekos), com marca registrada e licenca propria. Compre em blambot.com.
+  - MarkerFelt: fonte de sistema da Apple.
+  - Logos de Facebook/Twitter: marcas de terceiros.
+  - Todos os JSONs de configuracao do jogo: continham chaves de API e secrets
+    de servicos de terceiros ainda ativos.
+
+SITUACAO LEGAL
+  Esta arte e propriedade da Booyah Inc. e nao esta licenciada para reuso.
+  O jogo esta morto, mas o copyright nao expirou. Isto e material de estudo
+  e referencia - nao publique um produto usando estes assets.
