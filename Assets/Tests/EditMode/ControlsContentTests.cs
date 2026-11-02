@@ -31,14 +31,23 @@ namespace ProjetoFinal.Tests
         [Test]
         public void DefaultKeys_MatchGameDesign()
         {
-            Assert.AreEqual("<Keyboard>/space", DefaultPath("Move", "up"));
-            Assert.AreEqual("<Keyboard>/leftArrow", DefaultPath("Move", "left"));
-            Assert.AreEqual("<Keyboard>/rightArrow", DefaultPath("Move", "right"));
-            Assert.AreEqual("<Keyboard>/f", DefaultPath("Fire"));
+            Assert.AreEqual("<Keyboard>/a", DefaultPath("Move", "left"));
+            Assert.AreEqual("<Keyboard>/d", DefaultPath("Move", "right"));
+            Assert.AreEqual("<Keyboard>/space", DefaultPath("Fire"));
             Assert.AreEqual("<Keyboard>/r", DefaultPath("Reload"));
-            Assert.AreEqual("<Keyboard>/e", DefaultPath("Melee"));
+            Assert.AreEqual("<Keyboard>/f", DefaultPath("Melee"));
             Assert.AreEqual("<Keyboard>/q", DefaultPath("Heal"));
-            Assert.AreEqual("<Keyboard>/c", DefaultPath("Interact"));
+            Assert.AreEqual("<Keyboard>/e", DefaultPath("Interact"));
+        }
+
+        [Test]
+        public void AlternateBindings_StayOutOfControlsScreen()
+        {
+            var alternates = gameplay.bindings.Where(b => !b.isComposite && b.groups != "Keyboard").Select(b => b.path).ToList();
+            CollectionAssert.IsSubsetOf(new[] { "<Keyboard>/enter",
+                "<Mouse>/leftButton", "<Gamepad>/leftStick", "<Gamepad>/buttonWest", "<Gamepad>/buttonNorth" }, alternates);
+            Assert.AreEqual(7, gameplay.bindings.Count(b => !b.isComposite && b.groups == "Keyboard"),
+                "A tela de Controles lista só o grupo Keyboard.");
         }
 
         [Test]

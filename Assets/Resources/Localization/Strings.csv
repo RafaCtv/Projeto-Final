@@ -17,7 +17,7 @@ controls.hint,CLICK A KEY TO CHANGE IT,CLIQUE NUMA TECLA PARA ALTERAR
 controls.waitingKey,PRESS A KEY...,APERTE UMA TECLA...
 controls.resetDefaults,RESET,RESTAURAR
 # ---------- Ações (action.<Ação> ou action.<Ação>.<parte>) ----------
-action.Move.up,JUMP,PULAR
+action.Move,MOVE,MOVER
 action.Move.left,MOVE LEFT,MOVER PARA ESQUERDA
 action.Move.right,MOVE RIGHT,MOVER PARA DIREITA
 action.Fire,SHOOT,ATIRAR

@@ -51,14 +51,14 @@ namespace ProjetoFinal.Tests
         {
             Assert.AreEqual(true, RebindFireWith(keyboard.rKey));
             Assert.AreEqual("<Keyboard>/r", fire.bindings[0].effectivePath);
-            Assert.AreEqual("<Keyboard>/f", reload.bindings[0].effectivePath);
+            Assert.AreEqual("<Keyboard>/space", reload.bindings[0].effectivePath);
         }
 
         [Test]
         public void Escape_CancelsWithoutChanging()
         {
             Assert.AreEqual(false, RebindFireWith(keyboard.escapeKey));
-            Assert.AreEqual("<Keyboard>/f", fire.bindings[0].effectivePath);
+            Assert.AreEqual("<Keyboard>/space", fire.bindings[0].effectivePath);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace ProjetoFinal.Tests
 
             GameInput.ResetToDefaults();
 
-            Assert.AreEqual("<Keyboard>/f", fire.bindings[0].effectivePath);
+            Assert.AreEqual("<Keyboard>/space", fire.bindings[0].effectivePath);
         }
     }
 }

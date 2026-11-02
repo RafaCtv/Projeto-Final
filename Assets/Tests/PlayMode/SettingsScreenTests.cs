@@ -47,7 +47,7 @@ namespace ProjetoFinal.Tests
             Click("ControlsButton");
             yield return null;
             Assert.IsTrue(Screen("ControlsScreen").IsVisible);
-            Assert.AreEqual(8, Object.FindObjectsByType<KeyBindingRow>().Length, "3 movimentos + atirar, recarregar, corpo a corpo, curar, interagir.");
+            Assert.AreEqual(7, Object.FindObjectsByType<KeyBindingRow>().Length, "2 movimentos + atirar, recarregar, corpo a corpo, curar, interagir.");
 
             Click("BackButton");
             yield return null;
