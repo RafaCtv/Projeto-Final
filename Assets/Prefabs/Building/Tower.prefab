@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af5837dddfa27f4daaf9ca03316fba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretController
-  projectile: {fileID: 5515478734817315994, guid: 7cc369d1d56f27547bf334d20515ea06, type: 3}
+  projectile: {fileID: 5571407671976854498, guid: a03913151dd0bbf4598c334d571d43f4, type: 3}
   muzzle: {fileID: 5541333890243330828}
   range: 20
   damage: 15
