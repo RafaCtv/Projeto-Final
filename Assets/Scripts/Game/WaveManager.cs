@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class WaveManager : MonoBehaviour
 {
     [SerializeField] private GameManager game;
-    [SerializeField] private ZombieController zombiePrefab;
+    [SerializeField] private ZombieController[] zombiePrefabs;
     [SerializeField] private Transform spawnPoint;
     [SerializeField, Min(0)] private float preparationDuration = 60;
     [SerializeField, Min(0.05f)] private float spawnInterval = 1.5f;
@@ -38,7 +38,8 @@ public sealed class WaveManager : MonoBehaviour
             int count = PlannedEnemies;
             for (int i = 0; i < count && game.IsRunning; i++)
             {
-                var enemy = Instantiate(zombiePrefab, spawnPoint.position, Quaternion.identity, game.EnemyRoot);
+                var prefab = zombiePrefabs[Random.Range(0, zombiePrefabs.Length)];
+                var enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity, game.EnemyRoot);
                 enemy.Initialize(game); enemy.Defeated += OnDefeated; alive.Add(enemy); Spawned++;
                 if (i + 1 < count) yield return new WaitForSeconds(spawnInterval);
             }

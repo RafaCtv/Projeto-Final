@@ -8,6 +8,7 @@ public enum GameState { Preparation, Combat, WaveCompleted, GameOver }
 public sealed class GameManager : MonoBehaviour
 {
     [SerializeField] private BaseCore baseCore;
+    [SerializeField] private Health player;
     [SerializeField] private Transform enemyRoot;
     [SerializeField] private Transform projectileRoot;
     [SerializeField] private MonoBehaviour[] controlsToStop;
@@ -26,12 +27,23 @@ public sealed class GameManager : MonoBehaviour
     public GameState State { get; private set; } = GameState.Preparation;
     public bool IsRunning => State != GameState.GameOver;
     public BaseCore Base => baseCore;
+    public Health Player => player;
+    public bool PlayerDefeated => player != null && !player.IsAlive;
     public Transform EnemyRoot => enemyRoot;
     public Transform ProjectileRoot => projectileRoot;
     public event Action<GameState> StateChanged;
     private void Awake() => Time.timeScale = 1;
-    private void OnEnable() { if (baseCore != null) baseCore.Destroyed += EndGame; }
-    private void OnDisable() { if (baseCore != null) baseCore.Destroyed -= EndGame; }
+    private void OnEnable()
+    {
+        if (baseCore != null) baseCore.Destroyed += EndGame;
+        if (player != null) player.Died += OnPlayerDied;
+    }
+    private void OnDisable()
+    {
+        if (baseCore != null) baseCore.Destroyed -= EndGame;
+        if (player != null) player.Died -= OnPlayerDied;
+    }
+    private void OnPlayerDied(Health health) => EndGame();
     public bool TransitionTo(GameState state)
     {
         if (!IsRunning || state == State) return false;

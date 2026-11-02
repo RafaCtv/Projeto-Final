@@ -1,17 +1,18 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
 public sealed class ZombieController : MonoBehaviour
 {
     [SerializeField] private ZombieData data;
+    [SerializeField] private TargetSensor attackSensor;
+    [SerializeField] private Animator animator;
+    private static readonly int IsWalkingParameter = Animator.StringToHash("IsWalking");
     private Rigidbody2D body;
     private bool stopped;
     private Health health;
     private GameManager game;
     private float nextAttack;
-    private readonly List<RaycastHit2D> hits = new List<RaycastHit2D>();
     public ZombieData Data => data;
     public Health Health => health;
     public bool IsAlive => !stopped && health != null && health.IsAlive;
@@ -31,24 +32,17 @@ public sealed class ZombieController : MonoBehaviour
         if (stopped || data == null || (game != null && !game.IsRunning)) return;
         Health target = FindTarget();
         body.linearVelocity = new Vector2(target != null ? 0 : -data.Speed, body.linearVelocity.y);
+        if (animator != null) animator.SetBool(IsWalkingParameter, Mathf.Abs(body.linearVelocityX) > Mathf.Epsilon);
         if (target != null && Time.time >= nextAttack)
         {
             nextAttack = Time.time + data.AttackInterval;
             target.TakeDamage(data.Damage);
         }
     }
-    private Health FindTarget()
-    {
-        hits.Clear();
-        var filter = new ContactFilter2D { useTriggers = false }; filter.SetLayerMask(1 << 0);
-        Physics2D.Raycast(GetComponent<Collider2D>().bounds.center, Vector2.left, filter, hits, 0.9f);
-        foreach (var hit in hits)
-        {
-            var value = hit.collider.GetComponentInParent<Health>();
-            if (value != null && value.IsAlive && (value.GetComponent<BuildingInstance>() != null || value.GetComponent<BaseCore>() != null)) return value;
-        }
-        return null;
-    }
+    private Health FindTarget() => attackSensor != null ? attackSensor.FindTarget(IsAttackable) : null;
+
+    private static bool IsAttackable(Health value) =>
+        value.GetComponent<BuildingInstance>() != null || value.GetComponent<BaseCore>() != null || value.GetComponent<PlayerController>() != null;
     private void OnDied(Health value)
     {
         if (stopped) return;
@@ -63,6 +57,7 @@ public sealed class ZombieController : MonoBehaviour
     {
         stopped = true;
         if (body != null) body.linearVelocity = Vector2.zero;
+        if (animator != null) animator.SetBool(IsWalkingParameter, false);
     }
     public void DespawnWithoutReward()
     {
