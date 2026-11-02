@@ -31,14 +31,14 @@ namespace ProjetoFinal.Tests
         [Test]
         public void DefaultKeys_MatchGameDesign()
         {
-            Assert.AreEqual("<Keyboard>/upArrow", DefaultPath("Move", "up"));
+            Assert.AreEqual("<Keyboard>/space", DefaultPath("Move", "up"));
             Assert.AreEqual("<Keyboard>/leftArrow", DefaultPath("Move", "left"));
             Assert.AreEqual("<Keyboard>/rightArrow", DefaultPath("Move", "right"));
             Assert.AreEqual("<Keyboard>/f", DefaultPath("Fire"));
             Assert.AreEqual("<Keyboard>/r", DefaultPath("Reload"));
             Assert.AreEqual("<Keyboard>/e", DefaultPath("Melee"));
             Assert.AreEqual("<Keyboard>/q", DefaultPath("Heal"));
-            Assert.AreEqual("<Keyboard>/space", DefaultPath("Interact"));
+            Assert.AreEqual("<Keyboard>/c", DefaultPath("Interact"));
         }
 
         [Test]

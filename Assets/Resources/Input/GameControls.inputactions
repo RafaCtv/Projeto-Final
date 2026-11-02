@@ -76,7 +76,7 @@
                 {
                     "name": "up",
                     "id": "b2e4f6a8-2c3d-4e5f-9a01-2b3c4d5e6f02",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -153,7 +153,7 @@
                 {
                     "name": "",
                     "id": "b2e4f6a8-2c3d-4e5f-9a01-2b3c4d5e6f09",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
