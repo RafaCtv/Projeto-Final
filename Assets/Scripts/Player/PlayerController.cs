@@ -8,7 +8,9 @@ public sealed class PlayerController : MonoBehaviour
 {
     [SerializeField, Min(0)] private float moveSpeed = 4;
     [SerializeField] private Transform visual;
+    [SerializeField] private Animator animator;
 
+    private static readonly int IsRunningParameter = Animator.StringToHash("IsRunning");
     private Rigidbody2D body;
     private InputAction move;
     private float horizontal;
@@ -19,7 +21,7 @@ public sealed class PlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         if (visual != null) visualScale = visual.localScale;
-        // Ação compartilhada do GameInput: respeita o remapeamento feito na tela de Controles.
+        // Ação compartilhada: respeita o remapeamento da tela de Controles.
         move = GameInput.Gameplay.FindAction("Move", true);
     }
 
@@ -37,6 +39,7 @@ public sealed class PlayerController : MonoBehaviour
     {
         // Gravity and contact resolution retain control of the vertical axis.
         body.linearVelocity = new Vector2(horizontal * moveSpeed, body.linearVelocity.y);
+        if (animator != null) animator.SetBool(IsRunningParameter, Mathf.Abs(body.linearVelocityX) > Mathf.Epsilon);
     }
 
     private void OnDisable()
@@ -44,5 +47,6 @@ public sealed class PlayerController : MonoBehaviour
         move?.Disable();
         horizontal = 0;
         if (body != null) body.linearVelocity = new Vector2(0, body.linearVelocity.y);
+        if (animator != null) animator.SetBool(IsRunningParameter, false);
     }
 }
