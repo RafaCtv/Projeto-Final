@@ -1,3 +1,4 @@
+using TMPro;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,8 +7,8 @@ using UnityEngine.UI;
 public sealed class InteractionPromptUI : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
-    [SerializeField] private Text label;
-    [SerializeField] private Text feedbackLabel;
+    [SerializeField] private TMP_Text label;
+    [SerializeField] private TMP_Text feedbackLabel;
     [SerializeField, Min(0.1f)] private float feedbackDuration = 2;
     private Coroutine feedback;
 

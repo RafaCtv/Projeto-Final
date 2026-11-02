@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -11,13 +12,13 @@ public sealed class ResourceHUD : MonoBehaviour
     {
         public ResourceData resource;
         public Image icon;
-        public Text label;
+        public TMP_Text label;
     }
 
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private Entry[] entries = Array.Empty<Entry>();
     [SerializeField] private ResourceNode[] resourceNodes = Array.Empty<ResourceNode>();
-    [SerializeField] private Text collectionFeedback;
+    [SerializeField] private TMP_Text collectionFeedback;
     [SerializeField] private bool compactValues;
     [SerializeField, Min(0.1f)] private float feedbackDuration = 2;
     private Coroutine feedback;

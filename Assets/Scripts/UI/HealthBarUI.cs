@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public sealed class HealthBarUI : MonoBehaviour
 {
     [SerializeField] private Health health;
     [SerializeField] private Image fill;
-    [SerializeField] private Text value;
+    [SerializeField] private TMP_Text value;
     private float target;
     public static Color ColorFor(float ratio) => ratio > .6f ? new Color(.35f, .85f, .55f)
         : ratio >= .3f ? new Color(1, .77f, .27f) : new Color(1, .32f, .29f);
