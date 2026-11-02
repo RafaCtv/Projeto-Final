@@ -1,0 +1,8 @@
+Músicas: Juhani Junkala - "Chiptune Adventures" (licença CC0)
+https://opengameart.org/content/4-chiptunes-adventure
+
+MenuTheme.ogg   = 4. Stage Select
+Preparation.ogg = 1. Stage 1
+WaveCombat.ogg  = 3. Boss Fight
+
+Efeitos sonoros (pasta SFX): extraídos de No Zombies Allowed (Booyah Inc.), apenas para estudo.

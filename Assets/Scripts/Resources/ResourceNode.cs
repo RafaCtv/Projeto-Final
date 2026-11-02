@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ProjetoFinal.Audio;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -14,6 +15,7 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable
     [SerializeField, Min(0)] private float regenerationDelay = 15;
     [SerializeField] private SpriteRenderer visual;
     [SerializeField] private Color depletedColor = new Color(0.35f, 0.35f, 0.35f, 0.6f);
+    [SerializeField] private AudioClip collectSound;
 
     private int remaining;
     private Color availableColor;
@@ -48,6 +50,7 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable
         remaining -= amount;
         UpdateVisual();
         StartRegenerationIfNeeded();
+        SoundEffects.Play(collectSound);
         Collected?.Invoke(this, resource, amount);
     }
 

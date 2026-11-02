@@ -1,4 +1,5 @@
 using System;
+using ProjetoFinal.Audio;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -13,6 +14,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
     [SerializeField] private InteractionPromptUI interactionUI;
     [SerializeField] private Color availableColor = new Color(0.55f, 1, 0.7f, 0.32f);
     [SerializeField] private Color insufficientColor = new Color(1, 0.65f, 0.4f, 0.26f);
+    [SerializeField] private AudioClip[] buildSounds;
 
     private bool occupied;
     private bool constructing;
@@ -25,7 +27,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
         get
         {
             if (building == null || resourceManager == null) return "Construção indisponível";
-            string message = "Construir " + building.DisplayName + " — " + building.CostDescription;
+            string message = "Construir " + building.DisplayName + " - " + building.CostDescription;
             if (!resourceManager.CanAfford(building.Costs, out string reason)) message += "\n" + reason;
             return message;
         }
@@ -98,6 +100,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
                 return;
             }
             Feedback(building.DisplayName + " construída!");
+            if (buildSounds != null) foreach (var clip in buildSounds) SoundEffects.Play(clip);
         }
         catch (Exception exception)
         {
