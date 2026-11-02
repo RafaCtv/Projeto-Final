@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="ProjetoFinal.Runtime.csproj" />
+  <Project Path="ProjetoFinal.Tests.EditMode.csproj" />
+  <Project Path="ProjetoFinal.Tests.PlayMode.csproj" />
+  <Project Path="ProjetoFinal.Editor.csproj" />
+</Solution>

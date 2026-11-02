@@ -1,0 +1,40 @@
+key,en,pt-BR
+# ---------- Geral ----------
+game.title,Último Bastião,Último Bastião
+common.back,BACK,VOLTAR
+# ---------- Menu principal ----------
+menu.play,PLAY,JOGAR
+menu.settings,SETTINGS,CONFIGURAÇÕES
+menu.market,MARKET,LOJA
+menu.quit,QUIT,SAIR
+# ---------- Configurações ----------
+settings.title,SETTINGS,CONFIGURAÇÕES
+settings.masterVolume,MASTER VOLUME,VOLUME GERAL
+settings.controls,CONTROLS,CONTROLES
+# ---------- Controles ----------
+controls.title,CONTROLS,CONTROLES
+controls.hint,CLICK A KEY TO CHANGE IT,CLIQUE NUMA TECLA PARA ALTERAR
+controls.waitingKey,PRESS A KEY...,APERTE UMA TECLA...
+controls.resetDefaults,RESET,RESTAURAR
+# ---------- Ações (action.<Ação> ou action.<Ação>.<parte>) ----------
+action.Move.up,MOVE UP,MOVER PARA CIMA
+action.Move.left,MOVE LEFT,MOVER PARA ESQUERDA
+action.Move.right,MOVE RIGHT,MOVER PARA DIREITA
+action.Fire,SHOOT,ATIRAR
+action.Reload,RELOAD,RECARREGAR
+action.Melee,MELEE ATTACK,ATAQUE CORPO A CORPO
+action.Heal,HEAL,CURAR
+action.Interact,INTERACT,INTERAGIR
+# ---------- Nomes de teclas (key.<controle>) - as demais usam o nome padrão ----------
+key.upArrow,UP ARROW,SETA CIMA
+key.downArrow,DOWN ARROW,SETA BAIXO
+key.leftArrow,LEFT ARROW,SETA ESQUERDA
+key.rightArrow,RIGHT ARROW,SETA DIREITA
+key.space,SPACE,ESPAÇO
+key.leftShift,LEFT SHIFT,SHIFT ESQ.
+key.rightShift,RIGHT SHIFT,SHIFT DIR.
+key.leftCtrl,LEFT CTRL,CTRL ESQ.
+key.rightCtrl,RIGHT CTRL,CTRL DIR.
+key.enter,ENTER,ENTER
+key.tab,TAB,TAB
+key.backspace,BACKSPACE,BACKSPACE
