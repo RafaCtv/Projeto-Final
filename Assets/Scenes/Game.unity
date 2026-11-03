@@ -9107,7 +9107,7 @@ MonoBehaviour:
   resourceManager: {fileID: 1791630640}
   capacity: 20
   amountPerInteraction: 5
-  regenerationDelay: 20
+  regenerationDelay: 40
   visual: {fileID: 332124774}
   depletedColor: {r: 0.35, g: 0.35, b: 0.35, a: 0.6}
   collectSound: {fileID: 8300000, guid: bb5bf42afc3a33f488f61f79e40a9aa7, type: 3}
@@ -11907,6 +11907,7 @@ GameObject:
   - component: {fileID: 1569816942}
   - component: {fileID: 1569816944}
   - component: {fileID: 1569816943}
+  - component: {fileID: 901734820000000010}
   m_Layer: 0
   m_Name: BaseCore
   m_TagString: Untagged
@@ -12137,10 +12138,10 @@ MonoBehaviour:
   - {fileID: 4076619753339237016, guid: 1b192fc1e30e5144589acd885197c48e, type: 3}
   spawnPoint: {fileID: 3368913}
   preparationDuration: 60
-  spawnInterval: 1.5
+  spawnInterval: 1.2
   completionDuration: 3
   initialEnemies: 3
-  additionalEnemies: 2
+  additionalEnemies: 3
   completionReward: 10
 --- !u!1 &1583502614
 GameObject:
@@ -15101,6 +15102,9 @@ MonoBehaviour:
   defeatPanel: {fileID: 1041311895}
   defeatSubtitle: {fileID: 1468093192}
   restart: {fileID: 569952929}
+  towerDefinition: {fileID: 11400000, guid: c2ae49054828e5b4880aab79e25ffdc9, type: 2}
+  barricadeDefinition: {fileID: 11400000, guid: ad60250e6ee14434fa4ee7331f61875c, type: 2}
+  resources: {fileID: 1791630640}
 --- !u!114 &2033585894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15706,7 +15710,7 @@ MonoBehaviour:
   resourceManager: {fileID: 1791630640}
   capacity: 30
   amountPerInteraction: 10
-  regenerationDelay: 15
+  regenerationDelay: 25
   visual: {fileID: 825356709}
   depletedColor: {r: 0.35, g: 0.35, b: 0.35, a: 0.6}
   collectSound: {fileID: 8300000, guid: bb5bf42afc3a33f488f61f79e40a9aa7, type: 3}
@@ -16417,3 +16421,16 @@ SceneRoots:
   - {fileID: 1418145978}
   - {fileID: 1200541951}
   - {fileID: 930166454}
+--- !u!114 &901734820000000010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569816939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 522bbb02a1504e9da5e257a934c4ffd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::DamageFeedback
+  offset: {x: 0, y: 1.8}

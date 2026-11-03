@@ -7,7 +7,7 @@ public sealed class TurretController : MonoBehaviour
     [SerializeField] private Transform muzzle;
     [SerializeField, Min(1)] private float range = 20;
     [SerializeField, Min(1)] private int damage = 15;
-    [SerializeField, Min(0.05f)] private float shotInterval = 0.6f;
+    [SerializeField, Min(0.05f)] private float shotInterval = 1.2f;
     private GameManager game;
     private float nextShot;
     private readonly List<Collider2D> overlaps = new List<Collider2D>();

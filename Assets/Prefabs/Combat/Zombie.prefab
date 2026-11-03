@@ -8088,6 +8088,8 @@ GameObject:
   - component: {fileID: 8208486453853386376}
   - component: {fileID: 4740939831996872809}
   - component: {fileID: 4166762084326726798}
+  - component: {fileID: 901734820000000001}
+  - component: {fileID: 901734820000000010}
   m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
@@ -8758,3 +8760,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &901734820000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8969794377226320053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a12d7b9c0a04d1aa59e23bc79d2b6e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::WorldHealthBar
+  offset: {x: 0, y: 2.6}
+  width: 1.25
+  height: 0.14
+--- !u!114 &901734820000000010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8969794377226320053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 522bbb02a1504e9da5e257a934c4ffd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::DamageFeedback
+  offset: {x: 0, y: 1.8}

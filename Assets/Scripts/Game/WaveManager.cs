@@ -8,10 +8,10 @@ public sealed class WaveManager : MonoBehaviour
     [SerializeField] private ZombieController[] zombiePrefabs;
     [SerializeField] private Transform spawnPoint;
     [SerializeField, Min(0)] private float preparationDuration = 60;
-    [SerializeField, Min(0.05f)] private float spawnInterval = 1.5f;
+    [SerializeField, Min(0.05f)] private float spawnInterval = 1.2f;
     [SerializeField, Min(0)] private float completionDuration = 3;
     [SerializeField, Min(1)] private int initialEnemies = 3;
-    [SerializeField, Min(0)] private int additionalEnemies = 2;
+    [SerializeField, Min(0)] private int additionalEnemies = 3;
     [SerializeField, Min(0)] private int completionReward = 10;
     private readonly HashSet<ZombieController> alive = new HashSet<ZombieController>();
     public int WaveNumber { get; private set; } = 1;
@@ -40,7 +40,7 @@ public sealed class WaveManager : MonoBehaviour
             {
                 var prefab = zombiePrefabs[Random.Range(0, zombiePrefabs.Length)];
                 var enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity, game.EnemyRoot);
-                enemy.Initialize(game); enemy.Defeated += OnDefeated; alive.Add(enemy); Spawned++;
+                enemy.Initialize(game, WaveNumber); enemy.Defeated += OnDefeated; alive.Add(enemy); Spawned++;
                 if (i + 1 < count) yield return new WaitForSeconds(spawnInterval);
             }
             while (game.IsRunning && alive.Count > 0) yield return null;

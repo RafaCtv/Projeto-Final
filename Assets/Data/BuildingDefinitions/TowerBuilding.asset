@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
   id: tower
   displayName: Torre
-  description: "Torre defensiva est\xE1tica preparada para futuras funcionalidades.
-    Sem ataque nesta etapa."
+  description: Torre automatica de apoio. Requer sucata e moedas obtidas em combate.
   icon: {fileID: 21300000, guid: 4b5a83f23d68550438776fb7e96efc24, type: 3}
   prefab: {fileID: 3178571445756939207, guid: 39ef69acce6497146ba4c58d383412a4, type: 3}
   costs:
   - resource: {fileID: 11400000, guid: 2296422b86581a04db60b2aa869f52f3, type: 2}
-    amount: 15
+    amount: 30
+  - resource: {fileID: 11400000, guid: 45f674b9565e15f4f8a7d750d1513882, type: 2}
+    amount: 10

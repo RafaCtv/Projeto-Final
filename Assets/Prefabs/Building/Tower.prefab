@@ -418,7 +418,7 @@ MonoBehaviour:
   muzzle: {fileID: 5541333890243330828}
   range: 20
   damage: 15
-  shotInterval: 0.6
+  shotInterval: 1.2
 --- !u!1 &4441622687519945733
 GameObject:
   m_ObjectHideFlags: 0
