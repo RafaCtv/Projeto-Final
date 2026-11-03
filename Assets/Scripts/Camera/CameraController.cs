@@ -9,6 +9,7 @@ public sealed class CameraController : MonoBehaviour
     [SerializeField] private float mapMaxX = 70;
     [SerializeField, Min(0)] private float manualSpeed = 12;
     private InputAction pan, recenter;
+    private float lastTargetX;
     public bool IsManual { get; private set; }
     public bool InputEnabled { get; set; } = true;
 
@@ -18,11 +19,18 @@ public sealed class CameraController : MonoBehaviour
         pan.AddCompositeBinding("1DAxis").With("Negative", "<Keyboard>/leftArrow").With("Positive", "<Keyboard>/rightArrow");
         recenter = new InputAction("CameraHome", InputActionType.Button, "<Keyboard>/home");
     }
-    private void Start() { if (target != null) SetX(target.position.x); }
+    private void Start()
+    {
+        if (target == null) return;
+        lastTargetX = target.position.x;
+        SetX(lastTargetX);
+    }
     private void OnEnable() { pan?.Enable(); recenter?.Enable(); }
     private void LateUpdate()
     {
-        if (!InputEnabled) return;
+        bool targetMoved = target != null && Mathf.Abs(target.position.x - lastTargetX) > .001f;
+        if (target != null) lastTargetX = target.position.x;
+        if (!InputEnabled || Time.timeScale <= 0) return;
         float input = pan.ReadValue<float>();
         if (recenter.WasPressedThisFrame()) IsManual = false;
         else if (Mathf.Abs(input) > 0.01f)
@@ -31,6 +39,8 @@ public sealed class CameraController : MonoBehaviour
             SetX(transform.position.x + input * manualSpeed * Time.deltaTime);
             return;
         }
+        // Moving the survivor returns to follow; held arrows retain manual priority.
+        else if (IsManual && targetMoved) IsManual = false;
         if (!IsManual && target != null) SetX(target.position.x);
     }
     // Limita o alvo à faixa que a câmera consegue mostrar, para o pan manual não acumular além da borda.
