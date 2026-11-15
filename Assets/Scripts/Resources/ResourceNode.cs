@@ -5,7 +5,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
-public sealed class ResourceNode : MonoBehaviour, IInteractable
+public sealed class ResourceNode : MonoBehaviour, IInteractable, IInteractionPromptSource
 {
     [SerializeField] private ResourceData resource;
     [SerializeField] private ResourceManager resourceManager;
@@ -20,6 +20,7 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable
     private int remaining;
     private Color availableColor;
     private Coroutine regeneration;
+    private float regenerationEndsAt;
 
     public ResourceData Resource => resource;
     public int Remaining => remaining;
@@ -27,6 +28,18 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable
         && resourceManager != null && resourceManager.isActiveAndEnabled && resourceManager.IsRegistered(resource);
     public string InteractionDescription => resource == null ? string.Empty
         : "Coletar " + resource.DisplayName + " (" + remaining + " disponíveis)";
+
+    public bool IsRegenerating => regeneration != null;
+    public float RegenerationRemaining => IsRegenerating ? Mathf.Max(0, regenerationEndsAt - Time.time) : 0;
+    private readonly ResourceCost[] promptItems = new ResourceCost[1];
+    public InteractionPrompt Prompt
+    {
+        get
+        {
+            promptItems[0] = new ResourceCost(resource, Mathf.Min(amountPerInteraction, remaining));
+            return new InteractionPrompt("Coletar", promptItems, InteractionItemsKind.Reward);
+        }
+    }
 
     public event Action<ResourceNode, ResourceData, int> Collected;
 
@@ -62,6 +75,7 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable
 
     private IEnumerator Regenerate()
     {
+        regenerationEndsAt = Time.time + regenerationDelay;
         yield return new WaitForSeconds(regenerationDelay);
         remaining = Mathf.Max(0, capacity);
         regeneration = null;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
-public sealed class ConstructionPoint : MonoBehaviour, IInteractable
+public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteractionPromptSource
 {
     [SerializeField] private BuildingData building;
     [SerializeField] private ResourceManager resourceManager;
@@ -32,6 +32,9 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
             return message;
         }
     }
+
+    public InteractionPrompt Prompt => building == null ? default
+        : new InteractionPrompt(building.DisplayName, building.Costs, InteractionItemsKind.Cost);
 
     private void OnEnable()
     {
@@ -62,7 +65,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
         }
         if (!resourceManager.CanAfford(building.Costs, out string reason))
         {
-            Feedback(reason);
+            Feedback("Recursos insuficientes");
             return;
         }
 
@@ -96,7 +99,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable
             });
             if (!success)
             {
-                Feedback("Não foi possível construir. Nenhum recurso foi consumido.");
+                Feedback("Não foi possível construir");
                 return;
             }
             Feedback(building.DisplayName + " construída!");
