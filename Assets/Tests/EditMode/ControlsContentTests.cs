@@ -38,6 +38,7 @@ namespace ProjetoFinal.Tests
             Assert.AreEqual("<Keyboard>/f", DefaultPath("Melee"));
             Assert.AreEqual("<Keyboard>/q", DefaultPath("Heal"));
             Assert.AreEqual("<Keyboard>/e", DefaultPath("Interact"));
+            Assert.AreEqual("<Keyboard>/leftShift", DefaultPath("Sprint"));
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace ProjetoFinal.Tests
             var alternates = gameplay.bindings.Where(b => !b.isComposite && b.groups != "Keyboard").Select(b => b.path).ToList();
             CollectionAssert.IsSubsetOf(new[] { "<Keyboard>/enter",
                 "<Mouse>/leftButton", "<Gamepad>/leftStick", "<Gamepad>/buttonWest", "<Gamepad>/buttonNorth" }, alternates);
-            Assert.AreEqual(7, gameplay.bindings.Count(b => !b.isComposite && b.groups == "Keyboard"),
+            Assert.AreEqual(8, gameplay.bindings.Count(b => !b.isComposite && b.groups == "Keyboard"),
                 "A tela de Controles lista só o grupo Keyboard.");
         }
 

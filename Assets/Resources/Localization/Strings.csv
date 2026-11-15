@@ -25,6 +25,7 @@ action.Reload,RELOAD,RECARREGAR
 action.Melee,MELEE ATTACK,ATAQUE CORPO A CORPO
 action.Heal,HEAL,CURAR
 action.Interact,INTERACT,INTERAGIR
+action.Sprint,SPRINT,CORRER
 # ---------- Nomes de teclas (key.<controle>) - as demais usam o nome padrão ----------
 key.upArrow,UP ARROW,SETA CIMA
 key.downArrow,DOWN ARROW,SETA BAIXO
