@@ -11,6 +11,7 @@ public sealed class GameManager : MonoBehaviour
     [SerializeField] private Health player;
     [SerializeField] private Transform enemyRoot;
     [SerializeField] private Transform projectileRoot;
+    [SerializeField] private Transform pickupRoot;
     [SerializeField] private MonoBehaviour[] controlsToStop;
     [SerializeField] private CameraController cameraController;
     [SerializeField] private ResourceManager resources;
@@ -31,6 +32,7 @@ public sealed class GameManager : MonoBehaviour
     public bool PlayerDefeated => player != null && !player.IsAlive;
     public Transform EnemyRoot => enemyRoot;
     public Transform ProjectileRoot => projectileRoot;
+    public Transform PickupRoot => pickupRoot;
     public event Action<GameState> StateChanged;
     private void Awake() => Time.timeScale = 1;
     private void OnEnable()

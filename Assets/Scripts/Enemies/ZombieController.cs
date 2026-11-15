@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
@@ -27,6 +28,11 @@ public sealed class ZombieController : MonoBehaviour
     public bool IsAlive => !stopped && health != null && health.IsAlive;
     public Vector2 AimPosition => transform.Find("AimPoint").position;
     public event Action<ZombieController> Defeated;
+    private static readonly List<ZombieController> active = new List<ZombieController>();
+    // Zumbis vivos na cena (para HUD, indicadores etc.) sem varrer a hierarquia.
+    public static IReadOnlyList<ZombieController> Active => active;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetRegistry() => active.Clear();
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -36,8 +42,8 @@ public sealed class ZombieController : MonoBehaviour
         brain = new ZombieBrain(data);
         CachePivots();
     }
-    private void OnEnable() { if (health != null) health.Died += OnDied; }
-    private void OnDisable() { if (health != null) health.Died -= OnDied; }
+    private void OnEnable() { if (health != null) health.Died += OnDied; active.Add(this); }
+    private void OnDisable() { if (health != null) health.Died -= OnDied; active.Remove(this); }
     public void Initialize(GameManager session, int waveNumber = 1)
     {
         game = session;
@@ -106,9 +112,19 @@ public sealed class ZombieController : MonoBehaviour
         StopWithoutReward();
         foreach (var collider in GetComponentsInChildren<Collider2D>()) collider.enabled = false;
         if (game != null && data != null) game.AwardCoins(data.CoinReward);
+        DropLoot();
         Defeated?.Invoke(this);
         gameObject.SetActive(false);
         Destroy(gameObject);
+    }
+    private void DropLoot()
+    {
+        if (data == null || data.AmmoPickup == null) return;
+        int bullets = data.RollAmmoDrop(UnityEngine.Random.value, UnityEngine.Random.value);
+        if (bullets <= 0) return;
+        var parent = game != null ? game.PickupRoot : null;
+        var pickup = Instantiate(data.AmmoPickup, transform.position, Quaternion.identity, parent);
+        pickup.Initialize(bullets);
     }
     public void StopWithoutReward()
     {

@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: ProjetoFinal.Runtime::ZombieData
   maxHealth: 35
   speed: 2.6
-  damage: 5
   attackInterval: 0.7
   coinReward: 3
+  damage: 5
+  playerDamageMultiplier: 1
+  structureDamageMultiplier: 1
+  playerDetectionRange: 7
+  playerLoseRange: 10
+  verticalDetectionRange: 3
+  ammoDropChance: 0.25
+  ammoDropAmount: {x: 4, y: 8}
+  ammoPickup: {fileID: 8143247570265378940, guid: c256eb4c3126dd1469b5601c1784866d, type: 3}

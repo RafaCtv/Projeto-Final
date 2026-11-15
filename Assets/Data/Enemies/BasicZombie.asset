@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieData
   maxHealth: 60
   speed: 1.4
-  damage: 8
   attackInterval: 1
   coinReward: 2
+  damage: 8
+  playerDamageMultiplier: 1
+  structureDamageMultiplier: 1
+  playerDetectionRange: 7
+  playerLoseRange: 10
+  verticalDetectionRange: 3
+  ammoDropChance: 0.4
+  ammoDropAmount: {x: 6, y: 12}
+  ammoPickup: {fileID: 8143247570265378940, guid: c256eb4c3126dd1469b5601c1784866d, type: 3}
