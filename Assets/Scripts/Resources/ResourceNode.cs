@@ -14,6 +14,7 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable, IInteractionPro
     [Tooltip("Zero desabilita a regeneração. O intervalo começa quando o ponto se esgota.")]
     [SerializeField, Min(0)] private float regenerationDelay = 15;
     [SerializeField] private SpriteRenderer visual;
+    [SerializeField] private SpriteRenderer[] stackedVisuals = Array.Empty<SpriteRenderer>();
     [SerializeField] private Color depletedColor = new Color(0.35f, 0.35f, 0.35f, 0.6f);
     [SerializeField] private AudioClip collectSound;
 
@@ -85,6 +86,9 @@ public sealed class ResourceNode : MonoBehaviour, IInteractable, IInteractionPro
     private void UpdateVisual()
     {
         if (visual != null) visual.color = remaining > 0 ? availableColor : depletedColor;
+        int shown = capacity > 0 ? Mathf.CeilToInt(stackedVisuals.Length * (remaining / (float)capacity)) : 0;
+        for (int i = 0; i < stackedVisuals.Length; i++)
+            if (stackedVisuals[i] != null) stackedVisuals[i].enabled = i < shown;
     }
 
     private void OnDisable()

@@ -23,6 +23,11 @@ public sealed class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale <= 0)
+        {
+            if (promptUI != null) promptUI.SetTarget(null);
+            return;
+        }
         RefreshTarget();
         // A press is immediate even if the source action has a Hold interaction.
         if (interact.WasPressedThisFrame()) TryInteract();
@@ -64,6 +69,7 @@ public sealed class PlayerInteraction : MonoBehaviour
 
     public bool TryInteract()
     {
+        if (Time.timeScale <= 0) return false;
         // Re-query so a moved, disabled or destroyed object cannot use stale focus.
         target = FindNearest();
         if (target == null)

@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 3491946191588524569}
   - component: {fileID: 5472010345667520468}
   m_Layer: 0
-  m_Name: Rifle
+  m_Name: HeldWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -670,10 +670,11 @@ Transform:
   m_GameObject: {fileID: 1699849627571731427}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.75742495, y: 0.4418, z: 0}
-  m_LocalScale: {x: 1.3472048, y: 1.3472048, z: 1}
+  m_LocalPosition: {x: -0.813248, y: 0.348445, z: 0}
+  m_LocalScale: {x: 1.12, y: 1.12, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 547981942190313432}
   m_Father: {fileID: 3961113121855951161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5472010345667520468
@@ -702,7 +703,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2464869782094de49b1366e559bb7563, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -725,12 +726,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 14
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1a1576b8d127cdd49ad4cfa3cdc0c184, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 353b63c89d4c04e45b7aa10484bab0ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.27, y: 0.69}
+  m_Size: {x: 0.56, y: 0.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1386,12 +1387,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d602af2fd14114ea2663374e0f5ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  projectile: {fileID: 5515478734817315994, guid: 7cc369d1d56f27547bf334d20515ea06, type: 3}
+  weapon: {fileID: 11400000, guid: 884a09dbc3744d5889fb21355a7c591e, type: 2}
+  heldWeapon: {fileID: 5472010345667520468}
+  gripAnchor: {x: -0.6, y: 0.27}
   muzzle: {fileID: 547981942190313432}
   flash: {fileID: 2494418630676639195}
-  shotSound: {fileID: 8300000, guid: eca0287e305eba04fa405a3f6ae2cffc, type: 3}
-  damage: 20
-  shotInterval: 0.35
   game: {fileID: 0}
 --- !u!114 &3819966093057103295
 MonoBehaviour:
@@ -1957,11 +1957,11 @@ Transform:
   m_GameObject: {fileID: 3233397618746216551}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.77, y: 0.96, z: 0}
+  m_LocalPosition: {x: -0.12, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6630861740920292953}
+  m_Father: {fileID: 547981942190313432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2494418630676639195
 SpriteRenderer:
@@ -2014,7 +2014,7 @@ SpriteRenderer:
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: fa415b097067f23458daf068a43ff8c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.02, y: 0.69}
@@ -3528,11 +3528,12 @@ Transform:
   m_GameObject: {fileID: 6388182157443077288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.61, y: 0.96, z: 0}
+  m_LocalPosition: {x: -0.2688, y: 0.0374, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6630861740920292953}
+  m_Children:
+  - {fileID: 1416651632617505605}
+  m_Father: {fileID: 3491946191588524569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6412348670384745472
 GameObject:
@@ -4092,8 +4093,6 @@ Transform:
   - {fileID: 8647233072659342438}
   - {fileID: 8993235800581200720}
   - {fileID: 4668375544131001826}
-  - {fileID: 547981942190313432}
-  - {fileID: 1416651632617505605}
   - {fileID: 338515371244610263}
   m_Father: {fileID: 17746846963667155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

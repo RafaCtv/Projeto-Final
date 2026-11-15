@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada9e90a995b6e04e9d0a5dc56de6b09, type: 3}
+  m_Name: SubmachineGun
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::WeaponData
+  displayName: Submetralhadora
+  icon: {fileID: 21300000, guid: 5bb9ec1b9f834bf98205e35bc6e6b60e, type: 3}
+  projectile: {fileID: 5515478734817315994, guid: 7cc369d1d56f27547bf334d20515ea06, type: 3}
+  shotSound: {fileID: 8300000, guid: 40a167605c9f4fbcba841eea865144ac, type: 3}
+  reloadSound: {fileID: 0}
+  heldScale: 1.25
+  heldAngle: -16
+  grip: {x: 0.74, y: 0.4}
+  barrel: {x: 0.02, y: 0.48}
+  damage: 15
+  shotInterval: 0.13
+  range: 11
+  ammoName: .45 ACP
+  magazineSize: 24
+  startingReserve: 32
+  maxReserve: 120
+  reloadDuration: 1.55
