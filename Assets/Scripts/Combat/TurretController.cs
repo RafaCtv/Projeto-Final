@@ -26,11 +26,15 @@ public sealed class TurretController : MonoBehaviour
     {
         overlaps.Clear(); var filter = new ContactFilter2D { useTriggers = false }; filter.SetLayerMask(1 << 9);
         Physics2D.OverlapCircle(muzzle.position, range, filter, overlaps);
+        // Zumbis chegam pelos dois lados: prioriza o mais próximo da torre.
         ZombieController best = null;
+        float bestDistance = float.PositiveInfinity;
         foreach (var hit in overlaps)
         {
             var zombie = hit.GetComponentInParent<ZombieController>();
-            if (zombie != null && zombie.IsAlive && (best == null || zombie.transform.position.x < best.transform.position.x)) best = zombie;
+            if (zombie == null || !zombie.IsAlive) continue;
+            float distance = Mathf.Abs(zombie.transform.position.x - muzzle.position.x);
+            if (distance < bestDistance) { best = zombie; bestDistance = distance; }
         }
         return best;
     }
