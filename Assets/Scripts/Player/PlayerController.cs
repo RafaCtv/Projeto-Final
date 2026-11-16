@@ -45,6 +45,7 @@ public sealed class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale <= 0) return;
         float x = move.ReadValue<Vector2>().x;
         horizontal = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 0;
         if (horizontal != 0 && visual != null)

@@ -14,13 +14,13 @@ public sealed class Projectile : MonoBehaviour
 
     private void Awake() => body = GetComponent<Rigidbody2D>();
 
-    public void Initialize(Vector2 heading, int amount, GameManager session)
+    public void Initialize(Vector2 heading, int amount, GameManager session, float range = float.PositiveInfinity)
     {
         var direction = heading.normalized;
         damage = amount; game = session;
         transform.right = direction;
         body.linearVelocity = direction * speed;
-        Destroy(gameObject, lifetime);
+        Destroy(gameObject, Mathf.Min(lifetime, range / speed));
     }
 
     private void Update()

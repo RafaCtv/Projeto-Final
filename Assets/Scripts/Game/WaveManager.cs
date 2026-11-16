@@ -32,7 +32,8 @@ public sealed class WaveManager : MonoBehaviour
             while (PreparationRemaining > 0 && game.IsRunning)
             {
                 yield return null;
-                PreparationRemaining = Mathf.Max(0, PreparationRemaining - Time.deltaTime);
+                if (Time.timeScale > 0)
+                    PreparationRemaining = Mathf.Max(0, PreparationRemaining - Time.deltaTime);
             }
             if (!game.IsRunning) yield break;
             game.TransitionTo(GameState.Combat);
