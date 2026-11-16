@@ -198,6 +198,8 @@ GameObject:
   - component: {fileID: 1719052743610713141}
   - component: {fileID: 901734820000000001}
   - component: {fileID: 901734820000000010}
+  - component: {fileID: 1997595254490789563}
+  - component: {fileID: 2190827529112467077}
   m_Layer: 0
   m_Name: Barricade
   m_TagString: Untagged
@@ -280,6 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9974cc63a393f549abdfe2823afa878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingInstance
+  constructionSite: {fileID: 0}
+  finishedVisual: {fileID: 0}
+  enableWhenBuilt: []
 --- !u!114 &1719052743610713141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,3 +326,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ProjetoFinal.Runtime::DamageFeedback
   offset: {x: 0, y: 1.8}
+--- !u!114 &1997595254490789563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6092578300884493322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4feb52622cabb43abb927beafa2acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::HitReaction
+  shakeTarget: {fileID: 3919995499087124477}
+  shakeAmount: 0.06
+  duration: 0.18
+  flashColor: {r: 1, g: 0.75, b: 0.6, a: 1}
+  impactEffect: {fileID: 3770926098549783818, guid: 2417c02a34eece74f954180e1394b3d3, type: 3}
+  impactOffset: {x: 0, y: 0.9}
+  impactSpread: 0.4
+  impactSounds:
+  - {fileID: 8300000, guid: 481c3c07779398e4c926f2fee9ec479c, type: 3}
+  - {fileID: 8300000, guid: 6a96b0f2e33d97841b75d492db272f6f, type: 3}
+  volume: 0.55
+  soundCooldown: 0.12
+  hearingNear: 4
+  hearingFar: 14
+--- !u!114 &2190827529112467077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6092578300884493322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fac60ec7397b543a776a891d2d9af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::Repairable
+  fullRepairCost:
+  - resource: {fileID: 11400000, guid: 3faae475df8736746a2bdc5b6b5ef36f, type: 2}
+    amount: 12
+  resources: {fileID: 0}
+  repairSound: {fileID: 8300000, guid: 7766b848f480e2e48ab49cf5578da621, type: 3}
+  popupOffset: {x: 0, y: 2}

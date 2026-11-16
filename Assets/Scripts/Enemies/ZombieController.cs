@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ public sealed class ZombieController : MonoBehaviour
         {
             nextAttack = Time.time + data.AttackInterval;
             target.TakeDamage(DamageFor(target));
+            if (animator != null) StartCoroutine(Lunge(animator.transform));
         }
     }
     private float Think()
@@ -78,6 +80,18 @@ public sealed class ZombieController : MonoBehaviour
         float minX = baseCollider != null ? baseCollider.bounds.min.x : float.NegativeInfinity;
         float maxX = baseCollider != null ? baseCollider.bounds.max.x : float.NegativeInfinity;
         return brain.Decide(transform.position, playerAvailable, playerPosition, minX, maxX);
+    }
+    // Avanço curto do corpo no instante do golpe, para o dano "encaixar" com o ataque.
+    private IEnumerator Lunge(Transform visual)
+    {
+        const float duration = 0.18f, distance = 0.28f;
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            float k = Mathf.Sin(t / duration * Mathf.PI);
+            visual.localPosition = new Vector3(Facing * distance * k, 0, 0);
+            yield return null;
+        }
+        visual.localPosition = Vector3.zero;
     }
     public int DamageFor(Health target)
     {
