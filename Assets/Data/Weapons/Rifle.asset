@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 1a1576b8d127cdd49ad4cfa3cdc0c184, type: 3}
   projectile: {fileID: 5515478734817315994, guid: 7cc369d1d56f27547bf334d20515ea06, type: 3}
   shotSound: {fileID: 8300000, guid: eca0287e305eba04fa405a3f6ae2cffc, type: 3}
-  reloadSound: {fileID: 0}
+  reloadSound: {fileID: 8300000, guid: 36b2ca9cc2bb3a340971c8261e184b5d, type: 3}
   damage: 20
   shotInterval: 0.18
   magazineSize: 12
