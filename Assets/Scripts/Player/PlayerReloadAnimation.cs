@@ -1,7 +1,8 @@
 using UnityEngine;
 
 // Recarga caricata e procedural: a arma levanta, chacoalha, a mão de apoio "puxa o pente" e tudo volta.
-// Só lê o estado do PlayerCombat, então funciona com qualquer arma que use recarga.
+// Só lê o estado do PlayerCombat, então funciona com qualquer arma. A pose de repouso é relida
+// sempre que outra coisa mexe nas peças (ex.: trocar de arma reposiciona o HeldWeapon).
 [DefaultExecutionOrder(100)]
 public sealed class PlayerReloadAnimation : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public sealed class PlayerReloadAnimation : MonoBehaviour
 
     private Vector3[] basePositions;
     private Quaternion[] baseRotations;
+    private Vector3[] writtenPositions;
+    private Quaternion[] writtenRotations;
     private Vector3 handBase;
+    private Vector3 handWritten;
     private bool posed;
 
     private void Awake()
@@ -27,17 +31,14 @@ public sealed class PlayerReloadAnimation : MonoBehaviour
         if (combat == null) combat = GetComponentInParent<PlayerCombat>();
         basePositions = new Vector3[gunParts.Length];
         baseRotations = new Quaternion[gunParts.Length];
-        for (int i = 0; i < gunParts.Length; i++)
-        {
-            if (gunParts[i] == null) continue;
-            basePositions[i] = gunParts[i].localPosition;
-            baseRotations[i] = gunParts[i].localRotation;
-        }
-        if (supportHand != null) handBase = supportHand.localPosition;
+        writtenPositions = new Vector3[gunParts.Length];
+        writtenRotations = new Quaternion[gunParts.Length];
+        CaptureRest();
     }
 
     private void LateUpdate()
     {
+        CaptureRest();
         if (combat == null || !combat.IsReloading) { if (posed) ApplyPose(0, 0); return; }
         float t = combat.ReloadProgress;
         // Sobe rápido (0–20%), chacoalha no meio, desce no fim (80–100%).
@@ -47,21 +48,47 @@ public sealed class PlayerReloadAnimation : MonoBehaviour
         ApplyPose(tiltAngle * lift + shake, hand);
     }
 
+    // Peça que não está posada, ou que alguém moveu depois da nossa última escrita, vira a nova pose de repouso.
+    private void CaptureRest()
+    {
+        for (int i = 0; i < gunParts.Length; i++)
+        {
+            var part = gunParts[i];
+            if (part == null) continue;
+            if (!posed || part.localPosition != writtenPositions[i] || part.localRotation != writtenRotations[i])
+            {
+                basePositions[i] = part.localPosition;
+                baseRotations[i] = part.localRotation;
+            }
+        }
+        if (supportHand != null && System.Array.IndexOf(gunParts, supportHand) < 0
+            && (!posed || supportHand.localPosition != handWritten))
+            handBase = supportHand.localPosition;
+    }
+
     private void ApplyPose(float angle, float hand)
     {
         var rotation = Quaternion.Euler(0, 0, angle);
         var center = (Vector3)pivot;
         for (int i = 0; i < gunParts.Length; i++)
         {
-            if (gunParts[i] == null) continue;
-            gunParts[i].localPosition = center + rotation * (basePositions[i] - center);
-            gunParts[i].localRotation = rotation * baseRotations[i];
+            var part = gunParts[i];
+            if (part == null) continue;
+            part.localPosition = center + rotation * (basePositions[i] - center);
+            part.localRotation = rotation * baseRotations[i];
         }
         if (supportHand != null)
         {
             // Se a mão não gira com a arma, parte da pose original em vez de acumular deslocamento.
             if (System.Array.IndexOf(gunParts, supportHand) < 0) supportHand.localPosition = handBase;
             supportHand.localPosition += Vector3.down * (handDrop * hand);
+            handWritten = supportHand.localPosition;
+        }
+        for (int i = 0; i < gunParts.Length; i++)
+        {
+            if (gunParts[i] == null) continue;
+            writtenPositions[i] = gunParts[i].localPosition;
+            writtenRotations[i] = gunParts[i].localRotation;
         }
         posed = angle != 0 || hand != 0;
     }

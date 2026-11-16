@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 5bb9ec1b9f834bf98205e35bc6e6b60e, type: 3}
   projectile: {fileID: 5515478734817315994, guid: 7cc369d1d56f27547bf334d20515ea06, type: 3}
   shotSound: {fileID: 8300000, guid: 40a167605c9f4fbcba841eea865144ac, type: 3}
-  reloadSound: {fileID: 0}
+  reloadSound: {fileID: 8300000, guid: 42425984fe85ba747b84430b7c1925bb, type: 3}
   heldScale: 1.25
   heldAngle: -16
   grip: {x: 0.74, y: 0.4}
