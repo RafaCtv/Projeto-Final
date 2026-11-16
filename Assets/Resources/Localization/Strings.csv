@@ -7,6 +7,10 @@ menu.play,PLAY,JOGAR
 menu.settings,SETTINGS,CONFIGURAÇÕES
 menu.market,MARKET,LOJA
 menu.quit,QUIT,SAIR
+# ---------- Pausa ----------
+pause.title,PAUSED,PAUSA
+pause.resume,RESUME,CONTINUAR
+pause.mainMenu,MAIN MENU,MENU PRINCIPAL
 # ---------- Configurações ----------
 settings.title,SETTINGS,CONFIGURAÇÕES
 settings.masterVolume,MASTER VOLUME,VOLUME GERAL

@@ -19601,6 +19601,7 @@ GameObject:
   - component: {fileID: 2033585895}
   - component: {fileID: 2033585894}
   - component: {fileID: 2033585893}
+  - component: {fileID: 2033585897}
   m_Layer: 0
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -19658,6 +19659,19 @@ MonoBehaviour:
   defeatPanel: {fileID: 1041311895}
   defeatSubtitle: {fileID: 1468093192}
   restart: {fileID: 569952929}
+--- !u!114 &2033585897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033585891}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 55031d37c3b04703b359898e07a44339, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::GameplayPauseMenu
+  game: {fileID: 1570662870}
+  menuButtonPrefab: {fileID: 7769766934508475748, guid: 60d583df4494d0c4db5676292b81688b, type: 3}
 --- !u!114 &2033585894
 MonoBehaviour:
   m_ObjectHideFlags: 0
