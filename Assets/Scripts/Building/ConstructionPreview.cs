@@ -1,38 +1,41 @@
 using UnityEngine;
 
-// A composed watchpost needs several renderers; the original point still owns the purchase.
-[ExecuteAlways]
+// Mostra a prévia da construção só quando o jogador está perto de um ponto livre.
+// No editor (fora do Play) a prévia fica visível, para facilitar posicionar os pontos.
 public sealed class ConstructionPreview : MonoBehaviour
 {
     [SerializeField] private ConstructionPoint point;
+    [Tooltip("Objeto da prévia; vazio = a prévia configurada no ConstructionPoint.")]
     [SerializeField] private GameObject preview;
     [SerializeField] private Transform viewer;
     [SerializeField] private float previewDistance = 3.4f;
     [SerializeField] private LineRenderer marker;
-    private SpriteRenderer[] parts;
-    private GameObject cachedPreview;
-    private void Awake() { if (preview != null) parts = preview.GetComponentsInChildren<SpriteRenderer>(true); }
+
+    public bool IsShowing => Preview != null && Preview.activeSelf;
+    private GameObject Preview => preview != null ? preview : point != null ? point.PreviewObject : null;
+
+    private void Awake()
+    {
+        if (point == null) point = GetComponent<ConstructionPoint>();
+        if (viewer == null)
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player != null) viewer = player.transform;
+        }
+    }
+
     private void LateUpdate()
     {
-        if (point == null || preview == null) return;
-        bool visible = Application.isPlaying && !point.IsOccupied && (viewer == null || Mathf.Abs(viewer.position.x-transform.position.x) < previewDistance);
-        if (marker != null) marker.enabled = !point.IsOccupied;
-        if (preview.activeSelf != visible) preview.SetActive(visible);
-        // The original single-sprite availability renderer is retained for its references.
-        var source = transform.Find("AvailabilityPreview");
-        if (source != null)
+        var target = Preview;
+        if (point == null || target == null) return;
+        bool near = viewer != null && Mathf.Abs(viewer.position.x - transform.position.x) < previewDistance;
+        bool visible = !point.IsOccupied && near;
+        if (target.activeSelf != visible) target.SetActive(visible);
+        if (marker != null)
         {
-            var renderer = source.GetComponent<SpriteRenderer>();
-            if (renderer != null)
-            {
-                renderer.enabled = false;
-                if (visible)
-                {
-                    if (cachedPreview != preview || parts == null || parts.Length == 0) { parts = preview.GetComponentsInChildren<SpriteRenderer>(true); cachedPreview = preview; }
-                    foreach (var part in parts) { var color = renderer.color; color.a = .22f; part.color = color; }
-                }
-                if (marker != null) { marker.startColor = marker.endColor = new Color(renderer.color.r,renderer.color.g,renderer.color.b,.7f); }
-            }
+            marker.enabled = !point.IsOccupied;
+            var color = point.CurrentColor;
+            marker.startColor = marker.endColor = new Color(color.r, color.g, color.b, .7f);
         }
     }
 }
