@@ -46,9 +46,9 @@ public sealed class PlayerInteraction : MonoBehaviour
         foreach (var hit in overlaps)
         {
             if (hit == null || hit.transform.IsChildOf(transform)) continue;
-            var candidate = hit.GetComponentInParent<IInteractable>();
-            if (!(candidate is MonoBehaviour behaviour) || !behaviour.isActiveAndEnabled
-                || !candidate.CanInteract(gameObject)) continue;
+            // Um objeto pode ter várias interações (ex.: coletar e consertar); vale a primeira disponível.
+            var candidate = FirstAvailable(hit);
+            if (candidate == null) continue;
             float distance = (hit.ClosestPoint(Origin) - Origin).sqrMagnitude;
             if (distance > interactionRange * interactionRange) continue;
             EntityId id = hit.GetEntityId();
@@ -60,6 +60,17 @@ public sealed class PlayerInteraction : MonoBehaviour
             }
         }
         return nearest;
+    }
+
+    private readonly List<IInteractable> candidates = new List<IInteractable>();
+    private IInteractable FirstAvailable(Collider2D hit)
+    {
+        candidates.Clear();
+        hit.GetComponentsInParent(false, candidates);
+        foreach (var candidate in candidates)
+            if (candidate is MonoBehaviour behaviour && behaviour.isActiveAndEnabled && candidate.CanInteract(gameObject))
+                return candidate;
+        return null;
     }
 
     public bool TryInteract()

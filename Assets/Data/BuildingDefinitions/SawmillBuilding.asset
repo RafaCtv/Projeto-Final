@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc331a42e900dc48be6dd86a646eb9e, type: 3}
+  m_Name: SawmillBuilding
+  m_EditorClassIdentifier: ProjetoFinal.Runtime::BuildingData
+  id: sawmill
+  displayName: Serraria
+  description: Produz madeira sozinha.
+  icon: {fileID: 1743309581979235694, guid: 51eb92d6c326bc14c95d77bf2e76bf86, type: 3}
+  prefab: {fileID: 2320221827729517742, guid: e21eb883966c26e428c4a9e0107906de, type: 3}
+  costs:
+  - resource: {fileID: 11400000, guid: 45f674b9565e15f4f8a7d750d1513882, type: 2}
+    amount: 25
+  - resource: {fileID: 11400000, guid: 3faae475df8736746a2bdc5b6b5ef36f, type: 2}
+    amount: 15
+  - resource: {fileID: 11400000, guid: 2296422b86581a04db60b2aa869f52f3, type: 2}
+    amount: 10
+  constructionTime: 45

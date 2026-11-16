@@ -12,6 +12,8 @@ public sealed class BuildingData : ScriptableObject
     [SerializeField] private Sprite icon;
     [SerializeField] private BuildingInstance prefab;
     [SerializeField] private ResourceCost[] costs = Array.Empty<ResourceCost>();
+    [Tooltip("Segundos de obra antes de a construção funcionar. Zero = pronta na hora.")]
+    [SerializeField, Min(0)] private float constructionTime;
 
     public string Id => id;
     public string DisplayName => displayName;
@@ -19,6 +21,7 @@ public sealed class BuildingData : ScriptableObject
     public Sprite Icon => icon;
     public BuildingInstance Prefab => prefab;
     public IReadOnlyList<ResourceCost> Costs => costs;
+    public float ConstructionTime => constructionTime;
 
     public string CostDescription
     {

@@ -19,6 +19,8 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteracti
     private bool occupied;
     private bool constructing;
     public bool IsOccupied => occupied;
+    public Color CurrentColor { get; private set; } = new Color(0.55f, 1, 0.7f, 0.32f);
+    public GameObject PreviewObject => availabilityVisual != null ? availabilityVisual.gameObject : null;
     public BuildingData Building => building;
     public BuildingInstance InstalledBuilding { get; private set; }
 
@@ -46,10 +48,15 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteracti
 
     private void UpdateAvailability()
     {
-        if (availabilityVisual == null) return;
-        availabilityVisual.enabled = !occupied;
         if (!occupied && building != null && resourceManager != null)
-            availabilityVisual.color = resourceManager.CanAfford(building.Costs, out _) ? availableColor : insufficientColor;
+            CurrentColor = resourceManager.CanAfford(building.Costs, out _) ? availableColor : insufficientColor;
+        if (availabilityVisual == null) return;
+        // A prévia pode ter várias partes (ex.: torre + torreta): todas recebem a mesma cor.
+        foreach (var part in availabilityVisual.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            part.enabled = !occupied;
+            part.color = CurrentColor;
+        }
     }
 
     public bool CanInteract(GameObject interactor) =>
@@ -85,6 +92,8 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteracti
             prepared.Initialize(building, interactor.GetComponentsInChildren<Collider2D>());
             var turret = prepared.GetComponent<TurretController>();
             if (turret != null) turret.Initialize(game);
+            var producer = prepared.GetComponent<ResourceProducer>();
+            if (producer != null) producer.Initialize(resourceManager, game);
             prepared.transform.SetParent(installationPoint, false);
 
             bool success = resourceManager.TryPurchase(building.Costs, () =>
@@ -94,7 +103,7 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteracti
                 InstalledBuilding = prepared;
                 prepared.Destroyed += OnBuildingDestroyed;
                 occupied = true;
-                if (availabilityVisual != null) availabilityVisual.enabled = false;
+                UpdateAvailability();
                 return true;
             });
             if (!success)
@@ -102,7 +111,9 @@ public sealed class ConstructionPoint : MonoBehaviour, IInteractable, IInteracti
                 Feedback("Não foi possível construir");
                 return;
             }
-            Feedback(building.DisplayName + " construída!");
+            Feedback(building.ConstructionTime > 0
+                ? building.DisplayName + " em obra (" + Mathf.CeilToInt(building.ConstructionTime) + "s)"
+                : building.DisplayName + " construída!");
             if (buildSounds != null) foreach (var clip in buildSounds) SoundEffects.Play(clip);
         }
         catch (Exception exception)
