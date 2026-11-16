@@ -207,6 +207,143 @@ namespace ProjetoFinal.Tests
             StringAssert.EndsWith("s", timer.text);
         }
 
+        private static ConstructionPoint PointFor(string buildingId) =>
+            Object.FindObjectsByType<ConstructionPoint>(FindObjectsInactive.Exclude).First(p => p.Building != null && p.Building.Id == buildingId);
+
+        [UnityTest]
+        public IEnumerator Sawmill_IsBoughtWithCoins_BuildsFor45s_ThenProduces()
+        {
+            var point = PointFor("sawmill");
+            var resources = Object.FindAnyObjectByType<ResourceManager>();
+            foreach (var cost in point.Building.Costs) resources.TryAdd(cost.Resource, cost.Amount);
+            var coins = point.Building.Costs.First(c => c.Resource.Id == "coins").Resource;
+            int coinsBefore = resources.GetAmount(coins);
+
+            point.Interact(player.gameObject);
+            yield return null;
+
+            var building = point.InstalledBuilding;
+            Assert.IsNotNull(building, "A serraria deve ser instalada.");
+            Assert.Less(resources.GetAmount(coins), coinsBefore, "Deve gastar moedas.");
+            Assert.AreEqual(45f, point.Building.ConstructionTime, 0.01f);
+            Assert.IsTrue(building.IsUnderConstruction);
+            var producer = building.GetComponent<ResourceProducer>();
+            Assert.IsFalse(producer.enabled, "Não produz durante a obra.");
+            Assert.IsTrue(building.GetComponentInChildren<ConstructionSite>() != null, "Mostra o visual de obra.");
+
+            building.CompleteConstruction();
+            yield return null;
+            Assert.IsFalse(building.IsUnderConstruction);
+            Assert.IsTrue(producer.enabled);
+            Assert.IsTrue(building.GetComponentInChildren<ConstructionSite>() == null, "O visual de obra some ao terminar.");
+            Assert.AreEqual("wood", producer.Resource.Id);
+        }
+
+        [UnityTest]
+        public IEnumerator Producer_StoresUpToCapacity_AndPlayerCollectsWithInteract()
+        {
+            var point = PointFor("scrapyard");
+            var resources = Object.FindAnyObjectByType<ResourceManager>();
+            foreach (var cost in point.Building.Costs) resources.TryAdd(cost.Resource, cost.Amount);
+            point.Interact(player.gameObject);
+            yield return null;
+            var building = point.InstalledBuilding;
+            building.CompleteConstruction();
+            var producer = building.GetComponent<ResourceProducer>();
+            producer.ApplyStats(5, 0.5f, 10);
+            int stockBefore = resources.GetAmount(producer.Resource);
+
+            yield return WaitSeconds(1.6f);
+            Assert.AreEqual(10, producer.Stored, "Produz até encher o depósito.");
+            Assert.IsTrue(producer.IsFull);
+            Assert.AreEqual(stockBefore, resources.GetAmount(producer.Resource), "Não entrega sozinho ao jogador.");
+
+            var body = player.GetComponent<Rigidbody2D>();
+            body.position = new Vector2(building.transform.position.x, body.position.y);
+            yield return WaitSeconds(0.1f);
+            Assert.IsTrue(player.GetComponent<PlayerInteraction>().TryInteract());
+            Assert.AreEqual(stockBefore + 10, resources.GetAmount(producer.Resource));
+            Assert.AreEqual(0, producer.Stored);
+        }
+
+        [UnityTest]
+        public IEnumerator DamagedBase_CanBeRepaired_SpendingResources()
+        {
+            var resources = Object.FindAnyObjectByType<ResourceManager>();
+            var repair = game.Base.GetComponent<Repairable>();
+            game.Base.Health.TakeDamage(100);
+            yield return null;
+            foreach (var cost in repair.CurrentCost()) resources.TryAdd(cost.Resource, cost.Amount);
+            var costs = repair.CurrentCost().Select(c => (c.Resource, c.Amount)).ToArray();
+            var before = costs.Select(c => resources.GetAmount(c.Resource)).ToArray();
+
+            Assert.IsTrue(repair.CanInteract(player.gameObject));
+            repair.Interact(player.gameObject);
+
+            Assert.AreEqual(game.Base.Health.Maximum, game.Base.Health.Current);
+            for (int i = 0; i < costs.Length; i++)
+                Assert.AreEqual(before[i] - costs[i].Amount, resources.GetAmount(costs[i].Resource));
+            Assert.IsFalse(repair.CanInteract(player.gameObject), "Com vida cheia não há o que consertar.");
+        }
+
+        [UnityTest]
+        public IEnumerator ConstructionPreview_OnlyShowsWhenPlayerIsNear()
+        {
+            var point = PointFor("sawmill");
+            var preview = point.GetComponent<ConstructionPreview>();
+            var body = player.GetComponent<Rigidbody2D>();
+            body.position = new Vector2(point.transform.position.x + 15f, body.position.y);
+            yield return WaitSeconds(0.1f);
+            Assert.IsFalse(preview.IsShowing, "Longe do ponto a prévia fica escondida.");
+
+            body.position = new Vector2(point.transform.position.x + 0.5f, body.position.y);
+            yield return WaitSeconds(0.1f);
+            Assert.IsTrue(preview.IsShowing, "Perto do ponto a prévia aparece.");
+        }
+
+        [UnityTest]
+        public IEnumerator Turret_AimsLeft_AndShootsZombiesOnThatSide()
+        {
+            var tower = Object.Instantiate(Load<GameObject>("Assets/Prefabs/Building/Tower.prefab"), new Vector3(10f, -3.8f, 0), Quaternion.identity);
+            tower.GetComponent<TurretController>().Initialize(game);
+            var body = player.GetComponent<Rigidbody2D>();
+            body.position = new Vector2(60f, body.position.y);
+            var zombie = SpawnZombie(2f);
+            int before = zombie.Health.Current;
+            yield return WaitSeconds(2.5f);
+
+            Assert.Less(tower.transform.Find("TurretHead").localScale.y, 0, "A cabeça espelha ao mirar para a esquerda.");
+            Assert.IsTrue(zombie == null || zombie.Health.Current < before, "A torreta deve acertar o zumbi.");
+        }
+
+        [UnityTest]
+        public IEnumerator Reload_TiltsTheRifle_AndReturnsToRest()
+        {
+            var combat = player.GetComponent<PlayerCombat>();
+            var rifle = player.transform.Find("Visual/SniperAppearance/Body/Rifle");
+            var rest = rifle.localRotation;
+            combat.Ammo.TryConsume();
+            Assert.IsTrue(combat.StartReload());
+            yield return WaitSeconds(0.6f);
+            Assert.Greater(Quaternion.Angle(rest, rifle.localRotation), 10f, "A arma deve levantar durante a recarga.");
+
+            yield return WaitSeconds(1.2f);
+            Assert.IsFalse(combat.IsReloading);
+            Assert.Less(Quaternion.Angle(rest, rifle.localRotation), 0.5f, "A arma volta à pose original.");
+        }
+
+        [UnityTest]
+        public IEnumerator PlayerHit_FlashesRed()
+        {
+            var head = player.transform.Find("Visual/SniperAppearance/Body/Head").GetComponent<SpriteRenderer>();
+            var original = head.color;
+            player.TakeDamage(5);
+            yield return null;
+            Assert.AreNotEqual(original, head.color, "O jogador pisca ao levar dano.");
+            yield return WaitSeconds(0.4f);
+            Assert.AreEqual(original, head.color);
+        }
+
         [UnityTest]
         public IEnumerator ZombieSound_GetsLouderAsItApproachesThePlayer()
         {
