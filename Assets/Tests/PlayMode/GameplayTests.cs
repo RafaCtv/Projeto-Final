@@ -317,19 +317,49 @@ namespace ProjetoFinal.Tests
         }
 
         [UnityTest]
-        public IEnumerator Reload_TiltsTheRifle_AndReturnsToRest()
+        public IEnumerator Reload_TiltsTheWeapon_AndReturnsToRest()
         {
             var combat = player.GetComponent<PlayerCombat>();
-            var rifle = player.transform.Find("Visual/SniperAppearance/Body/Rifle");
-            var rest = rifle.localRotation;
+            var held = player.transform.Find("Visual/SniperAppearance/Body/HeldWeapon");
+            var rest = held.localRotation;
             combat.Ammo.TryConsume();
             Assert.IsTrue(combat.StartReload());
-            yield return WaitSeconds(0.6f);
-            Assert.Greater(Quaternion.Angle(rest, rifle.localRotation), 10f, "A arma deve levantar durante a recarga.");
+            yield return WaitSeconds(combat.Weapon.ReloadDuration * 0.45f);
+            Assert.Greater(Quaternion.Angle(rest, held.localRotation), 10f, "A arma deve levantar durante a recarga.");
 
-            yield return WaitSeconds(1.2f);
+            yield return WaitSeconds(combat.Weapon.ReloadDuration * 0.55f + 0.2f);
             Assert.IsFalse(combat.IsReloading);
-            Assert.Less(Quaternion.Angle(rest, rifle.localRotation), 0.5f, "A arma volta à pose original.");
+            Assert.Less(Quaternion.Angle(rest, held.localRotation), 0.5f, "A arma volta à pose original.");
+        }
+
+        [UnityTest]
+        public IEnumerator SwitchingWeaponMidReload_KeepsTheNewWeaponPose()
+        {
+            var combat = player.GetComponent<PlayerCombat>();
+            var held = player.transform.Find("Visual/SniperAppearance/Body/HeldWeapon");
+            var sniper = Resources.FindObjectsOfTypeAll<WeaponData>().FirstOrDefault(w => w.name == "Sniper");
+#if UNITY_EDITOR
+            if (sniper == null) sniper = AssetDatabase.LoadAssetAtPath<WeaponData>("Assets/Data/Weapons/Sniper.asset");
+#endif
+            Assert.IsNotNull(sniper);
+            combat.Ammo.TryConsume();
+            Assert.IsTrue(combat.StartReload());
+            yield return WaitSeconds(combat.Weapon.ReloadDuration * 0.45f);
+
+            combat.Equip(sniper);
+            var sniperPos = held.localPosition;
+            var sniperRot = held.localRotation;
+            yield return null;
+            yield return null;
+            Assert.Less(Vector3.Distance(sniperPos, held.localPosition), 0.001f, "A troca de arma não pode ser desfeita pela animação.");
+            Assert.Less(Quaternion.Angle(sniperRot, held.localRotation), 0.5f);
+
+            combat.Ammo.TryConsume();
+            Assert.IsTrue(combat.StartReload());
+            yield return WaitSeconds(sniper.ReloadDuration * 0.45f);
+            Assert.Greater(Quaternion.Angle(sniperRot, held.localRotation), 10f, "A sniper também anima a recarga.");
+            yield return WaitSeconds(sniper.ReloadDuration * 0.55f + 0.2f);
+            Assert.Less(Vector3.Distance(sniperPos, held.localPosition), 0.001f, "Volta à pose da sniper, não da arma anterior.");
         }
 
         [UnityTest]
