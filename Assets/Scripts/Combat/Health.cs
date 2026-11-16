@@ -13,12 +13,22 @@ public sealed class Health : MonoBehaviour
     public event Action<Health> Died;
     public event Action<Health, int> Damaged;
     private void Awake() => Initialize(maxHealth);
-    // Spawn initialization; gameplay exposes damage, not healing or repair.
+    // Spawn initialization.
     public void Initialize(int maximum)
     {
         maxHealth = Mathf.Max(1, maximum);
         Current = maxHealth;
         Changed?.Invoke(this);
+    }
+    // Conserto/cura: não ressuscita e não passa do máximo. Retorna quanto foi recuperado.
+    public int Repair(int amount)
+    {
+        if (amount <= 0 || !IsAlive) return 0;
+        int applied = Mathf.Min(amount, maxHealth - Current);
+        if (applied == 0) return 0;
+        Current += applied;
+        Changed?.Invoke(this);
+        return applied;
     }
     public bool TakeDamage(int amount)
     {
